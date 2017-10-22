@@ -11,7 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zeeshanlalani.customlistexample.MainActivity;
+import com.zeeshanlalani.customlistexample.Models.Contact;
 import com.zeeshanlalani.customlistexample.R;
+
+import java.util.List;
 
 /**
  * Created by admin on 10/15/2017.
@@ -19,15 +22,13 @@ import com.zeeshanlalani.customlistexample.R;
 
 public class CustomAdaptor extends BaseAdapter {
 
-    String[] students;
-    String[] ids;
+    List<Contact> contacts;
     Context context;
     private static LayoutInflater inflater = null;
 
-    public CustomAdaptor(MainActivity activity, String[] _students, String[] _ids) {
+    public CustomAdaptor(MainActivity activity, List<Contact> _contacts) {
         context = activity;
-        students = _students;
-        ids = _ids;
+        contacts = _contacts;
 
         inflater = ( LayoutInflater )context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -36,7 +37,7 @@ public class CustomAdaptor extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return students.length;
+        return contacts.size() + 1;
     }
 
     @Override
@@ -52,21 +53,26 @@ public class CustomAdaptor extends BaseAdapter {
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup) {
         View rowView;
-        rowView = inflater.inflate(R.layout.student_list, null);
-        TextView studentId = (TextView) rowView.findViewById(R.id.studentId);
-        TextView studentName =(TextView) rowView.findViewById(R.id.studentName);
+        if ( position == 0) {
+            rowView = inflater.inflate(R.layout.list_header, null);
+        } else {
+            rowView = inflater.inflate(R.layout.student_list, null);
+            TextView studentId = (TextView) rowView.findViewById(R.id.studentId);
+            TextView studentName = (TextView) rowView.findViewById(R.id.studentName);
 
-        studentId.setText( ids[position]);
-        studentName.setText( students[position]);
+            final Contact contact = contacts.get(position-1);
+            studentId.setText(contact.id);
+            studentName.setText(contact.name);
 
-        rowView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage( students[position] );
-                builder.show();
-            }
-        });
+            rowView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage(contact.id);
+                    builder.show();
+                }
+            });
+        }
 
         return rowView;
     }
