@@ -15,6 +15,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
+        android:text="ID"
+        android:ems="10"
+        android:id="@+id/txtId" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
         android:text="First Name"
         android:ems="10"
         android:id="@+id/txtFirstName" />

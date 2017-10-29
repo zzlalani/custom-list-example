@@ -12,7 +12,13 @@
     tools:context="com.zeeshanlalani.customlistexample.MainActivity">
 
     <Button
-        android:text="Button"
+        android:text="Refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/refresh" />
+
+    <Button
+        android:text="Add Student"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/new_student" />

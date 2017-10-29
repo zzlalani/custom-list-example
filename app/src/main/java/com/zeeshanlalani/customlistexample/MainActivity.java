@@ -10,7 +10,9 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.zeeshanlalani.customlistexample.Adaptor.CustomAdaptor;
-import com.zeeshanlalani.customlistexample.Models.Contact;
+import com.zeeshanlalani.customlistexample.Helpers.DatabaseHandler;
+
+import com.zeeshanlalani.customlistexample.Models.Student;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,18 +32,19 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     ListView listView;
-    Button newStudent;
+    Button newStudent, refresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String[] students = getResources().getStringArray(R.array.student_names);
-        String[] ids = getResources().getStringArray(R.array.student_ids);
+//        String[] students = getResources().getStringArray(R.array.student_names);
+//        String[] ids = getResources().getStringArray(R.array.student_ids);
 
         listView = (ListView) findViewById(R.id.list_view);
         newStudent = (Button) findViewById(R.id.new_student);
+        refresh = (Button) findViewById(R.id.refresh);
 
         newStudent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,13 +54,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        new getData().execute();
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Student> students = new DatabaseHandler(MainActivity.this).getStudents();
+                listView.setAdapter(new CustomAdaptor(MainActivity.this, students));
+            }
+        });
 
+        // new getData().execute();
+        // listView.setAdapter(new CustomAdaptor(MainActivity.this, list));
+        List<Student> students = new DatabaseHandler(this).getStudents();
+        listView.setAdapter(new CustomAdaptor(MainActivity.this, students));
     }
 
     public class getData extends AsyncTask<Void, Void, Void> {
         ProgressDialog pDialog;
-        List<Contact> list = new ArrayList<>();
+        List<Student> list = new ArrayList<>();
 
         @Override
         protected void onPreExecute() {
@@ -101,8 +114,8 @@ public class MainActivity extends AppCompatActivity {
 
                     String id = c.getString("_id");
                     String name = c.getString("firstName");
-                    Contact contact = new Contact(id, name);
-                    list.add(i, contact);
+                    Student student = new Student(0, name);
+                    list.add(i, student);
                 }
 
             } catch (MalformedURLException e) {
@@ -124,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 //            if (pDialog.isShowing())
 //                pDialog.dismiss();
 
-            listView.setAdapter(new CustomAdaptor(MainActivity.this, list));
+            //listView.setAdapter(new CustomAdaptor(MainActivity.this, list));
         }
 
         JSONObject bufferToJson (BufferedReader br) {

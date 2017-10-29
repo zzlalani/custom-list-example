@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.zeeshanlalani.customlistexample.Adaptor.CustomAdaptor;
-import com.zeeshanlalani.customlistexample.Models.Contact;
+import com.zeeshanlalani.customlistexample.Helpers.DatabaseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,7 +29,7 @@ import java.util.List;
 
 public class AddStudent extends AppCompatActivity {
 
-    EditText txtFirstName, txtLastName;
+    EditText txtId, txtFirstName, txtLastName;
     Button btnSave;
 
     @Override
@@ -37,6 +37,7 @@ public class AddStudent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_student);
 
+        txtId = (EditText) findViewById(R.id.txtId);
         txtFirstName = (EditText) findViewById(R.id.txtFirstName);
         txtLastName = (EditText) findViewById(R.id.txtLastName);
         btnSave = (Button) findViewById(R.id.btnSave);
@@ -44,13 +45,14 @@ public class AddStudent extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                save( txtFirstName.getText().toString(), txtLastName.getText().toString() );
+                save( Integer.parseInt(txtId.getText().toString()), txtFirstName.getText().toString(), txtLastName.getText().toString() );
             }
         });
     }
 
-    private void save(String firstName, String lastName) {
-        new getData( firstName, lastName ).execute();
+    private void save(int id, String firstName, String lastName) {
+        //new getData( firstName, lastName ).execute();
+        new DatabaseHandler(this).saveStudent(id, firstName, lastName);
     }
 
     public class getData extends AsyncTask<Void, Void, Void> {

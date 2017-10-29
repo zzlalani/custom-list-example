@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zeeshanlalani.customlistexample.MainActivity;
-import com.zeeshanlalani.customlistexample.Models.Contact;
+import com.zeeshanlalani.customlistexample.Models.Student;
 import com.zeeshanlalani.customlistexample.R;
 
 import java.util.List;
@@ -22,13 +22,13 @@ import java.util.List;
 
 public class CustomAdaptor extends BaseAdapter {
 
-    List<Contact> contacts;
+    List<Student> students;
     Context context;
     private static LayoutInflater inflater = null;
 
-    public CustomAdaptor(MainActivity activity, List<Contact> _contacts) {
+    public CustomAdaptor(MainActivity activity, List<Student> _students) {
         context = activity;
-        contacts = _contacts;
+        students = _students;
 
         inflater = ( LayoutInflater )context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -37,7 +37,7 @@ public class CustomAdaptor extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return contacts.size() + 1;
+        return students.size() + 1;
     }
 
     @Override
@@ -60,15 +60,15 @@ public class CustomAdaptor extends BaseAdapter {
             TextView studentId = (TextView) rowView.findViewById(R.id.studentId);
             TextView studentName = (TextView) rowView.findViewById(R.id.studentName);
 
-            final Contact contact = contacts.get(position-1);
-            studentId.setText(contact.id);
-            studentName.setText(contact.name);
+            final Student student = students.get(position-1);
+            studentId.setText(String.valueOf(student.id));
+            studentName.setText(student.name);
 
             rowView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setMessage(contact.id);
+                    builder.setMessage(student.name);
                     builder.show();
                 }
             });
